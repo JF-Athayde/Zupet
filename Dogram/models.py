@@ -12,7 +12,7 @@ class User(database.Model, UserMixin):
     email = database.Column(database.String, nullable=False, unique=True)
     password = database.Column(database.String, nullable=False)
     profile_pic = database.Column(database.String, nullable=False, default='default.jpg')
-    story = database.Column(database.Boolean, default=True, nullable=False)
+    story = database.Column(database.Boolean)
 
 class Post(database.Model):
     id = database.Column(database.Integer, primary_key=True)
@@ -20,5 +20,5 @@ class Post(database.Model):
     image_path = database.Column(database.String, nullable=False)
     date_posted = database.Column(database.DateTime, default=datetime.utcnow)
     id_usuario = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
-
+    likes = database.Column(database.Integer, nullable=False, default=0)
     user = database.relationship('User', backref='posts', lazy=True)

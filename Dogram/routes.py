@@ -4,8 +4,11 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from Dogram.form import *
 from Dogram.models import *
 from werkzeug.utils import secure_filename
+from flask_wtf.csrf import CSRFProtect, CSRFError
 import os
 import requests
+
+csrf = CSRFProtect(app)
 
 @app.route("/")
 def homepage():
@@ -25,11 +28,9 @@ def publicar():
         arquivo = form.endereco_imagem.data
         nome_seguro = secure_filename(arquivo.filename)
 
-        # Caminho absoluto do projeto até a pasta static/assets/posts
         pasta_upload = os.path.join(app.root_path, 'static', 'assets', 'posts')
         os.makedirs(pasta_upload, exist_ok=True)
 
-        # Caminho completo para salvar no disco
         caminho_arquivo = os.path.join(pasta_upload, nome_seguro)
         arquivo.save(caminho_arquivo)
 
@@ -80,7 +81,7 @@ def signup():
             username=formCriarConta.username.data,
             password=senha_hash,
             email=formCriarConta.email.data,
-            story=False
+            story=True
         )
         database.session.add(usuario)
         database.session.commit()
@@ -95,6 +96,15 @@ def perfil(username):
     usuario = User.query.filter_by(username=username).first_or_404()
     posts = Post.query.filter_by(user=usuario).order_by(Post.date_posted.desc()).all()
     return render_template("profile.html", usuario=usuario, posts=posts)
+
+@csrf.exempt
+@app.route("/curtir/<int:post_id>", methods=["POST"])
+@login_required
+def curtir(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.likes += 1
+    database.session.commit()
+    return {"success": True, "likes": post.likes}
 
 @app.route("/logout")
 @login_required

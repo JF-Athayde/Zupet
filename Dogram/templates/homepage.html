@@ -1,6 +1,8 @@
 {% extends "model.html" %}
 
 {% block links %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/storys.css') }}">
@@ -15,20 +17,19 @@
 </header>
 
 <main>
-    <!-- Storys -->
     <section class="storys-wrapper">
         <button class="arrow left">&#10094;</button>
         <div class="storys" id="storys">
             {% for profile in profiles %}
                 <a href="#" class="story">
                     <img src="{{ url_for('static', filename='assets/profile/' ~ (profile.profile_pic if profile.profile_pic else 'default.jpg')) }}" alt="Perfil de {{ profile.username }}">
+                    <p>{{ profile.username }}</p>
                 </a>
             {% endfor %}
         </div>
         <button class="arrow right">&#10095;</button>
     </section>
 
-    <!-- Posts -->
     <section class="posts">
         {% for post in posts %}
             <div class="post">
@@ -44,7 +45,8 @@
                      class="post-image">
 
                 <div class="post-actions">
-                    <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                    <button class="curtir-btn" data-post-id="{{ post.id }}"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir"></button>
+                    <span class="likes-count" id="likes-{{ post.id }}">{{ post.likes }}</span>                    
                     <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
                     <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
                 </div>
@@ -58,4 +60,5 @@
 </main>
 
 <script src="{{ url_for('static', filename='scripts/arrow.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/like.js') }}"></script>
 {% endblock %}

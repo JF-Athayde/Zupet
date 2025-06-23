@@ -10,7 +10,7 @@
 
 .storys {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem 0;
@@ -21,16 +21,12 @@
 }
 
 .story {
-  flex: 0 0 auto;
-  width: 84px;
-  height: 84px;
-  padding: 2px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  text-decoration: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  color: black;
   align-items: center;
-  cursor: pointer;
+  justify-content: center;
 }
 
 .story img {

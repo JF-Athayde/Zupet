@@ -52,6 +52,11 @@
   cursor: pointer;
 }
 
+.post-actions button {
+  background-color: transparent;
+  border: 0;
+}
+
 .post-caption {
   padding: 0 1rem 1rem;
   color: #333;
