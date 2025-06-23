@@ -15,10 +15,13 @@
 
 <main>
     <section class="perfil">
-        <img src="{{ url_for('static', filename='assets/profile/' + usuario.profile_pic) }}" alt="Foto de perfil de {{ usuario.username }}">
-        <h1>{{ usuario.username }}</h1>
-        <p>Email: {{ usuario.email }}</p>
-        <p>Total de posts: {{ posts | length }}</p>
+        <img src="{{ url_for('static', filename='assets/profile/' ~ (usuario.profile_pic if usuario.profile_pic else 'default.jpg')) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
+
+        <div class="t1">
+            <h1>{{ usuario.username }}</h1>
+            <p>Email: {{ usuario.email }}</p>
+            <p>Total de posts: {{ posts | length }}</p>
+        </div>
 
         <div class="profile-actions">
             <button>Seguir</button>
@@ -29,8 +32,8 @@
         {% for post in posts %}
             <div class="post">
                 <div class="post-header">
-                    <img src="{{ url_for('static', filename='assets/profile/' + usuario.profile_pic) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
-                    <span class="username">{{ usuario.username }}</span>
+                   <img src="{{ url_for('static', filename='assets/profile/' ~ (usuario.profile_pic if usuario.profile_pic else 'default.jpg')) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
+                    <p>{{ usuario.username }}</p>
                 </div>
 
                 <img src="{{ url_for('static', filename='assets/posts/' + post.image_path) }}" class="post-image" alt="Imagem do post">

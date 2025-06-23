@@ -15,8 +15,11 @@ def homepage():
     return render_template("homepage.html", profiles=profiles, posts=posts)
 
 @app.route("/publicar", methods=["GET", "POST"])
-@login_required
 def publicar():
+    if not current_user.is_authenticated:
+        flash("Você precisa estar logado para publicar um post.", "warning")
+        return redirect(url_for("login"))
+
     form = FormPublicarPost()
     if form.validate_on_submit():
         arquivo = form.endereco_imagem.data
@@ -34,7 +37,7 @@ def publicar():
         print(caminho_relativo)
         post = Post(
             caption=form.descricao.data,
-            image_path=caminho_relativo,  # 👈 caminho correto para o navegador
+            image_path=caminho_relativo,
             user=current_user
         )
 

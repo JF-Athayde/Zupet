@@ -10,46 +10,52 @@
 {% block title %}Início{% endblock %}
 
 {% block body %}
-    <header>
-        {% include 'navbar.html' %}
-    </header>
+<header>
+    {% include 'navbar.html' %}
+</header>
 
-    <main>
-        <section class="storys-wrapper">
-            <button class="arrow left">&#10094;</button>
-            <div class="storys" id="storys">
-                {% for profile in profiles %}
-                    <a href="#" class="story">
-                        <img src="{{ url_for('static', filename='assets/profile/profile' ~ profile.id ~ '.jpg') }}" alt="Perfil">
-                    </a>
-                {% endfor %}
-            </div>
-            <button class="arrow right">&#10095;</button>
-        </section>
-
-        <section class="posts">
-            {% for post in posts %}
-                <div class="post">
-                    <div class="post-header">
-                        <img src="{{ url_for('static', filename='assets/profile/profile' ~ post.user.id ~ '.jpg') }}" alt="Perfil" class="avatar">
-                        <span class="username">{{ post.user.username }}</span>
-                    </div>
-
-                    <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}" alt="Foto do post" class="post-image">
-
-                    <div class="post-actions">
-                        <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
-                        <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
-                        <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
-                    </div>
-
-                    <div class="post-caption">
-                        <strong>{{ post.user.username }}</strong> {{ post.caption }}
-                    </div>
-                </div>
+<main>
+    <!-- Storys -->
+    <section class="storys-wrapper">
+        <button class="arrow left">&#10094;</button>
+        <div class="storys" id="storys">
+            {% for profile in profiles %}
+                <a href="#" class="story">
+                    <img src="{{ url_for('static', filename='assets/profile/' ~ (profile.profile_pic if profile.profile_pic else 'default.jpg')) }}" alt="Perfil de {{ profile.username }}">
+                </a>
             {% endfor %}
-        </section>
-    </main>
+        </div>
+        <button class="arrow right">&#10095;</button>
+    </section>
 
-    <script src="{{ url_for('static', filename='scripts/arrow.js') }}"></script>
+    <!-- Posts -->
+    <section class="posts">
+        {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <img src="{{ url_for('static', filename='assets/profile/' ~ (post.user.profile_pic if post.user.profile_pic else 'default.jpg')) }}"
+                         alt="Perfil de {{ post.user.username }}"
+                         class="avatar">
+                    <span class="username">{{ post.user.username }}</span>
+                </div>
+
+                <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}"
+                     alt="Foto do post"
+                     class="post-image">
+
+                <div class="post-actions">
+                    <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                    <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
+                    <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
+                </div>
+
+                <div class="post-caption">
+                    <strong>{{ post.user.username }}</strong> {{ post.caption }}
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='scripts/arrow.js') }}"></script>
 {% endblock %}

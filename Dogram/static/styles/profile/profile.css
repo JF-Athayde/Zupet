@@ -1,223 +1,145 @@
-/* ================================
-   RESET & BASE
-==================================*/
+
+/*Reset*/
 
 * {
-  margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  margin: 0;
 }
 
-body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #f9f5f1;
-  color: #4a2c1a;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* ================================
-   CONTAINER PRINCIPAL
-==================================*/
-
+/*Geral*/
 main {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #f4f4f4;
 }
 
-/* ================================
-   PERFIL
-==================================*/
-
+/* Perfil */
 .perfil {
-  text-align: center;
-  padding-bottom: 30px;
-  border-bottom: 2px solid #ccc;
-}
-
-.perfil h1 {
-  font-size: 2.5rem;
-  color: #3b2314;
-  margin-bottom: 10px;
-}
-
-.perfil p {
-  font-size: 1.1rem;
-  color: #6b4c3b;
-  margin: 5px 0;
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  align-items: center;
 }
 
 .perfil img {
-  width: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  border-radius: 50%
 }
 
-/* ================================
-   POSTS GRID
-==================================*/
+.perfil button {
+  width: 100px;
+  height: 40px;
+  font-size: 20px;
+  background-color: rgb(255, 89, 0);
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.perfil button:hover {
+  background-color: rgb(220, 77, 0);
+}
+
+/* Posts */
 
 .posts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  padding: 40px 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
 }
 
-/* ================================
-   POST CARD
-==================================*/
-
 .post {
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 500px auto auto auto;
+  background-color: #fff;
+  border-radius: 10px;
   overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
 .post:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+  transform: scale(1.01);
 }
 
 .post-header {
   display: flex;
   align-items: center;
+  gap: 10px;
   padding: 1rem;
-  gap: 1rem;
-  background-color: #f1ebe6;
+  background-color: #fafafa;
+  border-bottom: 1px solid #eee;
 }
 
-.post-header img.avatar {
-  width: 45px;
-  height: 45px;
+.post-header .avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #e2d4c5;
 }
 
-.username {
-  font-weight: bold;
-  color: #4a2c1a;
+.post-header .username {
+  font-weight: 600;
   font-size: 1rem;
 }
 
-/* ================================
-   IMAGEM DO POST
-==================================*/
-
-.post img.post-image {
+.post-image {
   width: 100%;
+  height: 500px;
   object-fit: contain;
-  background-color: #eee;
+  background-color: #ddd;
 }
-
-/* ================================
-   AÇÕES (ex: ícones curtir/comentar)
-==================================*/
 
 .post-actions {
   display: flex;
+  align-items: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
-  align-items: center;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .post-actions img {
   width: 24px;
   height: 24px;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
-
-.post-actions img:hover {
-  transform: scale(1.2);
-}
-
-/* ================================
-   LEGENDA DO POST
-==================================*/
 
 .post-caption {
-  padding: 0 1rem 1rem;
-  color: #3e2b1f;
+  padding: 1rem;
   font-size: 0.95rem;
-  word-break: break-word;
+  color: #333;
+  line-height: 1.4;
 }
 
 .post small {
-  display: block;
   padding: 0 1rem 1rem;
+  font-size: 0.8rem;
   color: #999;
-  font-size: 0.75rem;
 }
 
-/* ================================
-   RESPONSIVO
-==================================*/
-
-@media (max-width: 768px) {
-  .perfil h1 {
-    font-size: 2rem;
+/* 3 colunas em telas grandes */
+@media (min-width: 1200px) {
+  .posts {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  .perfil p {
-    font-size: 1rem;
+/* 2 colunas em tablets e desktops menores */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .posts {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
+/* 1 coluna em celulares */
+@media (max-width: 767px) {
   .posts {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
-}
-
-@media (max-width: 480px) {
-  .perfil img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .post-caption {
-    font-size: 0.9rem;
-  }
-}
-
-/* ================================
-   BOTÃO SEGUIDORES / AÇÕES PERFIL
-==================================*/
-
-.profile-actions {
-  margin-top: 20px;
-}
-
-.profile-actions button {
-  padding: 10px 20px;
-  background-color: #4a2c1a;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.profile-actions button:hover {
-  background-color: #6d3c2c;
-}
-
-/* ================================
-   RODAPÉ (opcional)
-==================================*/
-
-footer {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #888;
-  padding: 20px 0;
 }

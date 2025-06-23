@@ -5,9 +5,9 @@ from werkzeug.security import generate_password_hash
 with app.app_context():
     database.create_all()
 
-    user1 = User(username="boby_dog", email="boby@example.com", password=generate_password_hash("123456"), story=True)
-    user2 = User(username="luna_cat", email="luna@example.com", password=generate_password_hash("abcdef"), story=True)
-    user3 = User(username="kiara", email="kiara@porco.com", password=generate_password_hash("Kiara10"), story=True)
+    user1 = User(username="boby_dog", email="boby@example.com", password=generate_password_hash("123456"), story=True, profile_pic="profile1.jpg")
+    user2 = User(username="luna_cat", email="luna@example.com", password=generate_password_hash("abcdef"), story=True, profile_pic="profile2.jpg")
+    user3 = User(username="kiara", email="kiara@porco.com", password=generate_password_hash("Kiara10"), story=True, profile_pic="profile3.jpg")
 
     database.session.add_all([user1, user2, user3])
     database.session.commit()

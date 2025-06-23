@@ -3,3 +3,4 @@ from Dogram.models import User, Post
 
 with app.app_context():
   database.create_all()
+print('Data base Criada!')

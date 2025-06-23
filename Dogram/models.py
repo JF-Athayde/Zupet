@@ -12,7 +12,7 @@ class User(database.Model, UserMixin):
     email = database.Column(database.String, nullable=False, unique=True)
     password = database.Column(database.String, nullable=False)
     profile_pic = database.Column(database.String, nullable=False, default='default.jpg')
-    story = database.Column(database.Boolean, default=False, nullable=False)
+    story = database.Column(database.Boolean, default=True, nullable=False)
 
 class Post(database.Model):
     id = database.Column(database.Integer, primary_key=True)
