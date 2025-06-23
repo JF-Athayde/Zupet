@@ -1,76 +1,55 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zupet</title>
+{% extends "model.html" %}
 
-  <link rel="stylesheet" href="/Dogram/static/styles/homepage/homepage.css">
-  <link rel="stylesheet" href="/Dogram/static/styles/homepage/hamburger.css">
-  <link rel="stylesheet" href="/Dogram/static/styles/homepage/storys.css">
-  <link rel="stylesheet" href="/Dogram/static/styles/homepage/posts.css">
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/storys.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/posts.css') }}">
+{% endblock %}
 
-</head>
-<body>
-  <header>
-    <nav>
-      <div class="logo">
-        <img src="/Dogram/static/assets/logo.png" alt="Logo cachorrinho">
-        <span class="brand-name">Zupet</span>
-      </div>
+{% block title %}Início{% endblock %}
 
-      <div class="main-nav">
-        <ul>
-          <li><a href="#"><img src="/Dogram/static/assets/casa.png" alt="Início"></a></li>
-          <li><a href="#"><img src="/Dogram/static/assets/lupa.png" alt="Buscar amigos peludos"></a></li>
-          <li><a href="#"><img src="/Dogram/static/assets/coracao.png" alt="Curtidas"></a></li>
-          <li><a href="#"><img src="/Dogram/static/assets/mais.png" alt="Adicionar Post ou História"></a></li>
-          <li><a href="#"><img src="/Dogram/static/assets/perfil.png" alt="Ver perfil"></a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
+{% block body %}
+    <header>
+        {% include 'navbar.html' %}
+    </header>
 
-  <main>
-    <section class="storys-wrapper">
-      <button class="arrow left">&#10094;</button>
-      <div class="storys" id="storys">
-        <a href="#" id="s1" class="story">
-          <img src="/Dogram/static/assets/perfil/perfil001.jpg" alt="Perfil">
-        </a>
-        <a href="#" id="s2" class="story">
-          <img src="/Dogram/static/assets/perfil/perfil002.jpg" alt="Perfil">
-        </a>
-        <a href="#" id="s3" class="story">
-          <img src="/Dogram/static/assets/perfil/perfil003.jpg" alt="Perfil">
-        </a>
-      </div>
-      <button class="arrow right">&#10095;</button>
-    </section>
+    <main>
+        <section class="storys-wrapper">
+            <button class="arrow left">&#10094;</button>
+            <div class="storys" id="storys">
+                {% for profile in profiles %}
+                    <a href="#" class="story">
+                        <img src="{{ url_for('static', filename='assets/profile/profile' ~ profile.id ~ '.jpg') }}" alt="Perfil">
+                    </a>
+                {% endfor %}
+            </div>
+            <button class="arrow right">&#10095;</button>
+        </section>
 
-    <section class="posts">
-      <div class="post" id="001">
-        <div class="post-header">
-          <img src="/Dogram/static/assets/perfil/perfil001.jpg" alt="Perfil" class="avatar">
-          <span class="username">boby_dog</span>
-        </div>
-        
-        <img src="/Dogram/static/assets/posts/cachorro_safado.jpg" alt="Foto do post" class="post-image">
-        
-        <div class="post-actions">
-          <img src="/Dogram/static/assets/coracao.png" alt="Curtir">
-          <img src="/Dogram/static/assets/comente.png" alt="Comentar">
-          <img src="/Dogram/static/assets/mandar.png" alt="Compartilhar">
-        </div>
+        <section class="posts">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-header">
+                        <img src="{{ url_for('static', filename='assets/profile/profile' ~ post.user.id ~ '.jpg') }}" alt="Perfil" class="avatar">
+                        <span class="username">{{ post.user.username }}</span>
+                    </div>
 
-        <div class="post-caption">
-          <strong>boby_dog</strong> Correndo no parque hoje! 🌳🐶
-        </div>
-      </div>
-    </section>
+                    <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}" alt="Foto do post" class="post-image">
 
+                    <div class="post-actions">
+                        <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                        <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
+                        <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
+                    </div>
 
-  </main>
-<script src="/Dogram/static/scripts/setas.js"></script>
-</body>
-</html>
+                    <div class="post-caption">
+                        <strong>{{ post.user.username }}</strong> {{ post.caption }}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='scripts/arrow.js') }}"></script>
+{% endblock %}

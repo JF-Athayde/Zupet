@@ -1,0 +1,26 @@
+<nav>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='assets/icones/logo.png') }}" alt="Logo cachorrinho">
+        <span class="brand-name">Zupet</span>
+    </div>
+
+    <div class="main-nav">
+        <ul>
+            <li><a href="{{ url_for('homepage') }}"><img src="{{ url_for('static', filename='assets/icones/casa.png') }}" alt="Início"></a></li>
+            <li><a href="#"><img src="{{ url_for('static', filename='assets/icones/lupa.png') }}" alt="Buscar amigos peludos"></a></li>
+            <li><a href="#"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtidas"></a></li>
+            <li><a href="{{ url_for('publicar') }}"><img src="{{ url_for('static', filename='assets/icones/mais.png') }}" alt="Adicionar Post ou História"></a></li>
+            <li>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('perfil', username=current_user.username) }}">
+                        <img src="{{ url_for('static', filename='assets/icones/perfil.png') }}" alt="Ver perfil">
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">
+                        <img src="{{ url_for('static', filename='assets/icones/perfil.png') }}" alt="Criar conta">
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>

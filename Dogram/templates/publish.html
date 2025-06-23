@@ -1,0 +1,39 @@
+{% extends "model.html" %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/publish/publish.css') }}">
+{% endblock %}
+
+{% block title %}Publicar{% endblock %}
+
+{% block body %}
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main>
+    <div class="form-container">
+        <h2>Publicar Novo Post</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <label>Imagem</label>
+            {{ form.endereco_imagem(class="form-control") }}
+            {% for error in form.endereco_imagem.errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+
+            <label>Descrição</label>
+            {{ form.descricao(class="form-control", rows="4") }}
+            {% for error in form.descricao.errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+
+            {{ form.botao_confirm(class="btn-submit") }}
+        </form>
+    </div>
+</main>
+
+{% endblock %}

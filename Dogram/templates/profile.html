@@ -1,0 +1,53 @@
+{% extends "model.html" %}
+
+{% block title %}Perfil de {{ usuario.username }}{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+<header>
+    {% include "navbar.html" %}
+</header>
+
+<main>
+    <section class="perfil">
+        <img src="{{ url_for('static', filename='assets/profile/' + usuario.profile_pic) }}" alt="Foto de perfil de {{ usuario.username }}">
+        <h1>{{ usuario.username }}</h1>
+        <p>Email: {{ usuario.email }}</p>
+        <p>Total de posts: {{ posts | length }}</p>
+
+        <div class="profile-actions">
+            <button>Seguir</button>
+        </div>
+    </section>
+
+    <section class="posts">
+        {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <img src="{{ url_for('static', filename='assets/profile/' + usuario.profile_pic) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
+                    <span class="username">{{ usuario.username }}</span>
+                </div>
+
+                <img src="{{ url_for('static', filename='assets/posts/' + post.image_path) }}" class="post-image" alt="Imagem do post">
+
+                <div class="post-actions">
+                    <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                    <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
+                    <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
+                </div>
+
+                <div class="post-caption">
+                    {{ post.caption }}
+                </div>
+
+                <small>{{ post.date_posted.strftime('%d/%m/%Y %H:%M') }}</small>
+            </div>
+        {% endfor %}
+    </section>
+</main>
+{% endblock %}

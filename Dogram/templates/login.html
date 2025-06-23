@@ -1,0 +1,50 @@
+{% extends "model.html" %}
+
+{% block title %}Criar Conta{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/logs/logs.css') }}">
+{% endblock %}
+
+{% block body %}
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+
+    <main>
+        <form method="POST">
+            <h1>Login</h1>
+
+            {{ form.csrf_token }}
+
+            <div class="it">
+                {{ form.email.label() }}
+                {{ form.email() }}
+            </div>
+
+            <div class="it">
+                {{ form.password.label() }}
+                {{ form.password() }}
+            </div>
+
+            {{ form.botao_confirm() }}
+
+            {% if form.errors %}
+                <div class="form-errors">
+                    <ul>
+                        {% for field, errors in form.errors.items() %}
+                            {% for error in errors %}
+                                <li><strong>{{ field }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </form>
+
+
+        <a href="{{ url_for('signup') }}">Ainda não tem uma conta? Clique aqui para criar.</a>
+    </main>
+{% endblock %}
