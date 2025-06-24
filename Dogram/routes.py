@@ -15,7 +15,12 @@ def homepage():
     profiles = User.query.filter_by(story=True).all()
     posts = Post.query.order_by(Post.date_posted.desc()).all()
 
-    return render_template("homepage.html", profiles=profiles, posts=posts)
+    liked_post_ids = []
+    if current_user.is_authenticated:
+        liked_post_ids = [post.id for post in current_user.favorites]
+
+    return render_template("homepage.html", profiles=profiles, posts=posts, liked_post_ids=liked_post_ids)
+
 
 @app.route("/publicar", methods=["GET", "POST"])
 def publicar():
@@ -102,9 +107,47 @@ def perfil(username):
 @login_required
 def curtir(post_id):
     post = Post.query.get_or_404(post_id)
+
+    if post in current_user.favorites:
+        return {"success": False, "message": "Você já curtiu este post.", "likes": post.likes}
+
     post.likes += 1
+    current_user.favorites.append(post)
+
     database.session.commit()
+
     return {"success": True, "likes": post.likes}
+
+@csrf.exempt
+@app.route("/seguir/<int:user_id>", methods=["POST"])
+@login_required
+def seguir(user_id):
+    usuario_a_seguir = User.query.get_or_404(user_id)
+
+    if usuario_a_seguir == current_user:
+        return {"error": "Você não pode seguir a si mesmo."}, 400
+
+    if not current_user.seguindo.filter_by(id=usuario_a_seguir.id).first():
+        current_user.seguindo.append(usuario_a_seguir)
+        seguindo = True
+    else:
+        current_user.seguindo.remove(usuario_a_seguir)
+        seguindo = False
+
+    database.session.commit()
+    total_seguidores = usuario_a_seguir.seguidores.count()
+
+    return {
+        "success": True,
+        "seguindo": seguindo,
+        "total_seguidores": total_seguidores
+    }
+
+@app.route("/favoritos")
+@login_required
+def favoritos():
+    favorite_posts = current_user.favorites.order_by(Post.date_posted.desc()).all()
+    return render_template("likes.html", posts=favorite_posts)
 
 @app.route("/logout")
 @login_required

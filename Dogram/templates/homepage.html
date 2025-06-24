@@ -21,7 +21,7 @@
         <button class="arrow left">&#10094;</button>
         <div class="storys" id="storys">
             {% for profile in profiles %}
-                <a href="#" class="story">
+                <a href="{{ url_for('perfil', username=profile.username) }}" class="story">
                     <img src="{{ url_for('static', filename='assets/profile/' ~ (profile.profile_pic if profile.profile_pic else 'default.jpg')) }}" alt="Perfil de {{ profile.username }}">
                     <p>{{ profile.username }}</p>
                 </a>
@@ -35,17 +35,25 @@
             <div class="post">
                 <div class="post-header">
                     <img src="{{ url_for('static', filename='assets/profile/' ~ (post.user.profile_pic if post.user.profile_pic else 'default.jpg')) }}"
-                         alt="Perfil de {{ post.user.username }}"
-                         class="avatar">
+                        alt="Perfil de {{ post.user.username }}"
+                        class="avatar">
                     <span class="username">{{ post.user.username }}</span>
                 </div>
 
                 <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}"
-                     alt="Foto do post"
-                     class="post-image">
+                    alt="Foto do post"
+                    class="post-image">
 
                 <div class="post-actions">
-                    <button class="curtir-btn" data-post-id="{{ post.id }}"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir"></button>
+                    <button class="curtir-btn" data-post-id="{{ post.id }}">
+                        {% if post.id in liked_post_ids %}
+                            <img src="{{ url_for('static', filename='assets/icones/coracao-cheio.png') }}" alt="Descurtir">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                        {% endif %}
+                    </button>
+
+
                     <span class="likes-count" id="likes-{{ post.id }}">{{ post.likes }}</span>                    
                     <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
                     <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">

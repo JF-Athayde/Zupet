@@ -1,0 +1,51 @@
+{% extends "model.html" %}
+{% block title %}Favoritos{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/likes/likes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/posts.css') }}">    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/css/footer.css') }}">
+{% endblock %}
+
+{% block body %}
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    <main>
+        <h2>Seus posts favoritos</h2>
+    
+        {% if posts %}
+            <section class="posts">
+                {% for post in posts %}
+                    <div class="post">
+                        <div class="post-header">
+                            <img src="{{ url_for('static', filename='assets/profile/' ~ (post.user.profile_pic if post.user.profile_pic else 'default.jpg')) }}"
+                                alt="Perfil de {{ post.user.username }}"
+                                class="avatar">
+                            <span class="username">{{ post.user.username }}</span>
+                        </div>
+
+                        <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}"
+                            alt="Foto do post"
+                            class="post-image">
+
+                        <div class="post-actions">
+                            <button class="curtir-btn" data-post-id="{{ post.id }}"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir"></button>
+                            <span class="likes-count" id="likes-{{ post.id }}">{{ post.likes }}</span>                    
+                            <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
+                            <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
+                        </div>
+
+                        <div class="post-caption">
+                            <strong>{{ post.user.username }}</strong> {{ post.caption }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        {% else %}
+            <p>Você ainda não favoritou nenhum post.</p>
+        {% endif %}
+    </main>
+{% endblock %}

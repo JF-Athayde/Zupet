@@ -1,4 +1,3 @@
-
 const storysContainer = document.getElementById("storys");
 const scrollAmount = 120;
 

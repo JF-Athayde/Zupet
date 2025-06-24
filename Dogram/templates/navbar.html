@@ -8,7 +8,7 @@
         <ul>
             <li><a href="{{ url_for('homepage') }}"><img src="{{ url_for('static', filename='assets/icones/casa.png') }}" alt="Início"></a></li>
             <li><a href="#"><img src="{{ url_for('static', filename='assets/icones/lupa.png') }}" alt="Buscar amigos peludos"></a></li>
-            <li><a href="#"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtidas"></a></li>
+            <li><a href="{{ url_for('favoritos') }}"><img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtidas"></a></li>
             <li><a href="{{ url_for('publicar') }}"><img src="{{ url_for('static', filename='assets/icones/mais.png') }}" alt="Adicionar Post ou História"></a></li>
             <li>
                 {% if current_user.is_authenticated %}

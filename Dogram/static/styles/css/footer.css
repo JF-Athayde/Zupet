@@ -1,22 +1,37 @@
-/* layout.css */
-
-html, body {
-    height: 100%;
+/* Reset básico */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* Ocupa toda a altura da tela */
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fffdf9;
+    color: #4a2c1a;
+}
+
+/* Layout principal flexível em coluna */
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-main#content {
+/* Conteúdo principal flexível */
+main {
     flex: 1;
+    padding: 2rem;
 }
 
+/* Rodapé simples e elegante */
 footer {
     background-color: #f1f1f1;
+    color: #5a4a3f;
     padding: 1rem;
     text-align: center;
+    font-size: 0.95rem;
+    border-top: 1px solid #e0e0e0;
 }

@@ -1,35 +1,37 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const botoesCurtir = document.querySelectorAll(".curtir-btn");
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+document.querySelectorAll('.curtir-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+        const postId = button.getAttribute('data-post-id');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const likeCountSpan = document.getElementById(`likes-${postId}`);
+        const img = button.querySelector('img');
 
-    botoesCurtir.forEach(botao => {
-        botao.addEventListener("click", function (e) {
-            e.preventDefault(); // impede comportamento padrão
-
-            const postId = this.getAttribute("data-post-id");
-
-            fetch(`/curtir/${postId}`, {
-                method: "POST",
+        try {
+            const response = await fetch(`/curtir/${postId}`, {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
                 },
-                body: JSON.stringify({}),
-                credentials: "include" // mantém o cookie de login
-            })
-            .then(response => {
-                if (!response.ok) throw new Error("Erro na requisição");
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const contador = document.getElementById(`likes-${postId}`);
-                    contador.textContent = data.likes;
-                }
-            })
-            .catch(error => {
-                console.error("Erro ao curtir:", error);
             });
-        });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Atualiza o número de likes
+                likeCountSpan.textContent = data.likes;
+
+                // Troca o ícone do coração para o curtido
+                img.src = '/static/assets/icones/coracao-cheio.png';
+                img.alt = 'Descurtir';
+
+                // Opcional: desabilita o botão para não permitir mais likes
+                button.disabled = true;
+            } else {
+                console.log('Já Curtiu')
+            }
+        } catch (error) {
+            console.error('Erro ao curtir:', error);
+            alert('Erro ao curtir o post. Tente novamente.');
+        }
     });
 });

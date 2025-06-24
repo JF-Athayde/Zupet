@@ -3,6 +3,8 @@
 {% block title %}Perfil de {{ usuario.username }}{% endblock %}
 
 {% block links %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/homepage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/hamburger.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile/profile.css') }}">
@@ -19,13 +21,22 @@
 
         <div class="t1">
             <h1>{{ usuario.username }}</h1>
+            <p><span class="likes-count" id="contador-seguidores">{{ usuario.seguidores.count() }}</span> seguidor(es)</p>
             <p>Email: {{ usuario.email }}</p>
             <p>Total de posts: {{ posts | length }}</p>
         </div>
 
+        {% if current_user.is_authenticated and current_user.id != usuario.id %}
         <div class="profile-actions">
-            <button>Seguir</button>
+            <button class="seguir-btn" data-profile-id="{{ usuario.id }}">
+                {% if usuario in current_user.seguindo %}
+                    Deixar de seguir
+                {% else %}
+                    Seguir
+                {% endif %}
+            </button>
         </div>
+        {% endif %}
     </section>
 
     <section class="posts">
@@ -39,7 +50,15 @@
                 <img src="{{ url_for('static', filename='assets/posts/' + post.image_path) }}" class="post-image" alt="Imagem do post">
 
                 <div class="post-actions">
-                    <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                    <button class="curtir-btn" data-post-id="{{ post.id }}">
+                        {% if post.id in liked_post_ids %}
+                            <img src="{{ url_for('static', filename='assets/icones/coracao-cheio.png') }}" alt="Descurtir">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                        {% endif %}
+                    </button>
+
+                    <span class="likes-count" id="likes-{{ post.id }}">{{ post.likes }}</span>
                     <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
                     <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
                 </div>
@@ -53,4 +72,7 @@
         {% endfor %}
     </section>
 </main>
+
+<script src="{{ url_for('static', filename='scripts/folow.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/like.js') }}"></script>
 {% endblock %}
