@@ -52,9 +52,8 @@
                         {% endif %}
                     </button>
 
-
                     <span class="likes-count" id="likes-{{ post.id }}">{{ post.likes }}</span>                    
-                    <img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar">
+                    <a href="{{ url_for('ver_post', post_id=post.id) }}"><img src="{{ url_for('static', filename='assets/icones/comente.png') }}" alt="Comentar"></a>
                     <img src="{{ url_for('static', filename='assets/icones/mandar.png') }}" alt="Compartilhar">
                 </div>
 

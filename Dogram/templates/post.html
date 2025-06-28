@@ -1,0 +1,84 @@
+{% extends "model.html" %}
+
+{% block links %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/general/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/posts/post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/homepage/posts.css') }}">
+{% endblock %}
+
+{% block title %}Post de {{ post.user.username }}{% endblock %}
+
+{% block body %}
+<header>
+    {% include 'navbar.html' %}
+</header>
+
+<main>
+    <div class="container">
+        <h2>
+            <img src="{{ url_for('static', filename='assets/profile/' ~ (post.user.profile_pic if post.user.profile_pic else 'default.jpg')) }}"
+                alt="Perfil de {{ post.user.username }}"
+                class="avatar">
+            {{ post.user.username }}
+        </h2>
+
+        <img src="{{ url_for('static', filename='assets/posts/' ~ post.image_path) }}"
+            alt="Imagem do Post"
+            class="img-fluid">
+
+        <div class="post-actions">
+            <form method="POST" action="{{ url_for('curtir', post_id=post.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="curtir-btn" data-post-id="{{ post.id }}">
+                    {% if post.id in liked_post_ids %}
+                        <img src="{{ url_for('static', filename='assets/icones/coracao-cheio.png') }}" alt="Descurtir">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='assets/icones/coracao.png') }}" alt="Curtir">
+                    {% endif %}
+                </button>
+
+            </form>
+
+            <span class="likes-count">{{ post.likes }} curtidas</span>
+        </div>
+
+        <div class="post-info">
+            <p><strong>{{ post.user.username }}</strong> {{ post.caption }}</p>
+            <div class="post-meta">
+                <span>{{ post.date_posted.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+        </div>
+
+        <hr>
+
+        {% if current_user.is_authenticated %}
+        <form method="POST" action="{{ url_for('comentar', post_id=post.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <textarea name="conteudo" placeholder="Escreva um comentário..." required></textarea>
+            <button type="submit" class="btn" disabled>Publicar</button>
+        </form>
+        {% else %}
+        <p><a href="{{ url_for('login') }}">Faça login</a> para comentar.</p>
+        {% endif %}
+        
+        <h4>Comentários ({{ comentarios|length }})</h4>
+        <div class="comentarios">
+            {% for comentario in comentarios %}
+                <div>
+                    <p>
+                        <strong>{{ comentario.user.username }}</strong>
+                        <span>{{ comentario.date_posted.strftime('%d/%m/%Y %H:%M') }}</span>
+                    </p>
+                    <p>{{ comentario.content }}</p>
+                </div>
+            {% else %}
+                <p class="sem-comentarios">Sem comentários ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<script src="{{ url_for('static', filename='scripts/like.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/input.js') }}"></script>
+{% endblock %}

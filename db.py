@@ -1,5 +1,5 @@
 from Dogram import database, app
-from Dogram.models import User, Post, favorites, seguidores
+from Dogram.models import User, Post, favorites, seguidores, Comment
 from werkzeug.security import generate_password_hash
 
 with app.app_context():

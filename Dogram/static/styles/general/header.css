@@ -71,8 +71,8 @@ nav {
     height: 28px;
 }
 
-/* ========== MOBILE (max-width: 700px) ========== */
-@media (max-width: 700px) {
+/* ========== MOBILE (max-width: 900px) ========== */
+@media (max-width: 900px) {
     body {
         padding-left: 0;
         padding-top: 60px; /* espaço para menu horizontal fixo */

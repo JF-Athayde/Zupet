@@ -36,13 +36,18 @@
             </button>
         </div>
         {% endif %}
+        
+        {% if current_user.id == usuario.id %}
+        <a href="{{ url_for('logout') }}" class='exit'>Sair</a>
+        {% endif %}
+
     </section>
 
     <section class="posts">
         {% for post in posts %}
             <div class="post">
                 <div class="post-header">
-                   <img src="{{ url_for('static', filename='assets/profile/' ~ (usuario.profile_pic if usuario.profile_pic else 'default.jpg')) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
+                    <img src="{{ url_for('static', filename='assets/profile/' ~ (usuario.profile_pic if usuario.profile_pic else 'default.jpg')) }}" class="avatar" alt="Avatar de {{ usuario.username }}">
                     <p>{{ usuario.username }}</p>
                 </div>
 

@@ -1,5 +1,7 @@
 document.querySelectorAll('.curtir-btn').forEach(button => {
-    button.addEventListener('click', async () => {
+    button.addEventListener('click', async (event) => {
+        event.preventDefault(); // Impede recarregamento mesmo se estiver dentro de <form>
+
         const postId = button.getAttribute('data-post-id');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const likeCountSpan = document.getElementById(`likes-${postId}`);
@@ -24,10 +26,10 @@ document.querySelectorAll('.curtir-btn').forEach(button => {
                 img.src = '/static/assets/icones/coracao-cheio.png';
                 img.alt = 'Descurtir';
 
-                // Opcional: desabilita o botão para não permitir mais likes
+                // Opcional: desabilita o botão para evitar múltiplos likes
                 button.disabled = true;
             } else {
-                console.log('Já Curtiu')
+                console.log('Já curtiu este post.');
             }
         } catch (error) {
             console.error('Erro ao curtir:', error);

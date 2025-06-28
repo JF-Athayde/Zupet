@@ -73,14 +73,18 @@ def signup():
     formCriarConta = FormCriarConta()
     
     if formCriarConta.validate_on_submit():
-
         usuario_existente = User.query.filter(
             (User.email == formCriarConta.email.data) | 
             (User.username == formCriarConta.username.data)
         ).first()
+
         if usuario_existente:
-            flash("Este email ou nome de usuário já está em uso. Tente outro.", "danger")
+            # Adiciona erro customizado nos campos
+            if usuario_existente.email == formCriarConta.email.data or usuario_existente.username == formCriarConta.username.data:
+                formCriarConta.email.errors.append("Este email e/ou nome de usuário já estão sendo utilizados.")
+
             return render_template("signup.html", form=formCriarConta)
+
         senha_hash = bcrypt.generate_password_hash(formCriarConta.password.data).decode('utf-8')
         usuario = User(
             username=formCriarConta.username.data,
@@ -93,7 +97,6 @@ def signup():
         login_user(usuario, remember=True)
         return redirect(url_for("homepage"))
     
-    print(formCriarConta.errors)
     return render_template("signup.html", form=formCriarConta)
 
 @app.route("/perfil/<string:username>")
@@ -148,6 +151,30 @@ def seguir(user_id):
 def favoritos():
     favorite_posts = current_user.favorites.order_by(Post.date_posted.desc()).all()
     return render_template("likes.html", posts=favorite_posts)
+
+@csrf.exempt
+@app.route("/comentar/<int:post_id>", methods=["POST"])
+@login_required
+def comentar(post_id):
+    post = Post.query.get_or_404(post_id)
+    conteudo = request.form.get("conteudo")
+
+    if not conteudo:
+        flash("Comentário não pode ser vazio.", "warning")
+        return redirect(url_for("ver_post", post_id=post.id))
+
+    comentario = Comment(content=conteudo, user=current_user, post=post)
+    database.session.add(comentario)
+    database.session.commit()
+
+    return redirect(url_for("ver_post", post_id=post.id))
+
+@app.route("/post/<int:post_id>")
+def ver_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    comentarios = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.asc()).all()
+
+    return render_template("post.html", post=post, comentarios=comentarios)
 
 @app.route("/logout")
 @login_required

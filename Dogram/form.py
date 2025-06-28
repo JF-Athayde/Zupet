@@ -10,16 +10,17 @@ class FormLogin(FlaskForm):
     botao_confirm = SubmitField("Fazer login")
 
 class FormCriarConta(FlaskForm):
-    email = StringField("E-mail", validators=[DataRequired(), Email()])
-    username = StringField("Username", validators=[DataRequired(), Length(min=0, max=20)])
-    password = PasswordField("Senha", validators=[DataRequired(), Length(min=6, max=20)])
-    confirmar_senha = PasswordField("Confirmação de senha", validators=[DataRequired(), Length(min=6, max=20), EqualTo("password")])
-    botao_confirm = SubmitField("Criar conta")
-
-    def validate_email(self, email):
-        usuario = User.query.filter_by(email=email.data).first()
-        if usuario:
-            raise ValidationError("Email já cadastrado")
+    username = StringField("Usuário", validators=[DataRequired(message="O nome de usuário é obrigatório.")])
+    email = StringField("E-mail", validators=[DataRequired(message="O e-mail é obrigatório."), Email(message="E-mail inválido.")])
+    password = PasswordField("Senha", validators=[
+        DataRequired(message="A senha é obrigatória."),
+        Length(min=6, message="A senha deve ter pelo menos 6 caracteres.")
+    ])
+    confirm_password = PasswordField("Confirmar Senha", validators=[
+        DataRequired(message="A confirmação de senha é obrigatória."),
+        EqualTo('password', message="As senhas não coincidem.")
+    ])
+    submit = SubmitField("Criar Conta")
 
 class FormPublicarPost(FlaskForm):
     endereco_imagem = FileField("Endereço da imagem", validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg', 'webp'], 'Apenas imagens')])

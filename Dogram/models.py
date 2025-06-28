@@ -41,6 +41,9 @@ class User(database.Model, UserMixin):
         lazy='dynamic'
     )
 
+    # Comentários feitos pelo usuário
+    comments = database.relationship('Comment', backref='user', lazy=True)
+
 class Post(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     caption = database.Column(database.String, nullable=False)
@@ -51,3 +54,15 @@ class Post(database.Model):
 
     # Usuário que criou o post
     user = database.relationship('User', backref='posts', lazy=True)
+
+    # Comentários recebidos
+    comments = database.relationship('Comment', backref='post', lazy=True, cascade='all, delete-orphan')
+
+class Comment(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    content = database.Column(database.Text, nullable=False)
+    date_posted = database.Column(database.DateTime, default=datetime.utcnow)
+
+    # Relacionamento com post e usuário
+    post_id = database.Column(database.Integer, database.ForeignKey('post.id'), nullable=False)
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)

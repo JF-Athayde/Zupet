@@ -32,10 +32,10 @@
 
             {% if form.errors %}
                 <div class="form-errors">
-                    <ul>
+                    <ul style="padding: 10px;">
                         {% for field, errors in form.errors.items() %}
                             {% for error in errors %}
-                                <li><strong>{{ field }}:</strong> {{ error }}</li>
+                                <li>{{ error }}</li>
                             {% endfor %}
                         {% endfor %}
                     </ul>
