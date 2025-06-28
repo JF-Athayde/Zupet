@@ -1,6 +1,6 @@
 from Dogram import database, app
 from Dogram.models import User, Post, favorites, seguidores, Comment
-from werkzeug.security import generate_password_hash
+from Dogram import bcrypt
 
 with app.app_context():
   database.create_all()
@@ -10,10 +10,11 @@ print('Data base Criada!')
 with app.app_context():
     database.create_all()
 
-    user1 = User(username="boby_dog", email="boby@example.com", password=generate_password_hash("123456"), story=True, profile_pic="profile1.jpg")
-    user2 = User(username="luna_cat", email="luna@example.com", password=generate_password_hash("abcdef"), story=True, profile_pic="profile2.jpg")
-    user3 = User(username="kiara", email="kiara@porco.com", password=generate_password_hash("Kiara10"), story=True, profile_pic="profile3.jpg")
-    user4 = User(username="max_dog", email="max@dog.com", password=generate_password_hash("maximiliano10"), story=True, profile_pic="profile4.jpg")
+    user1 = User(username="boby_dog", email="boby@example.com", password=bcrypt.generate_password_hash("123456").decode('utf-8'), story=True, profile_pic="profile1.jpg")
+    user2 = User(username="luna_cat", email="luna@example.com", password=bcrypt.generate_password_hash("abcdef").decode('utf-8'), story=True, profile_pic="profile2.jpg")
+    user3 = User(username="kiara", email="kiara@porco.com", password=bcrypt.generate_password_hash("Kiara10").decode('utf-8'), story=True, profile_pic="profile3.jpg")
+    user4 = User(username="max_dog", email="max@dog.com", password=bcrypt.generate_password_hash("maximiliano10").decode('utf-8'), story=True, profile_pic="profile4.jpg")
+
 
     database.session.add_all([user1, user2, user3, user4])
     database.session.commit()
